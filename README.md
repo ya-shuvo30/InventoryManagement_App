@@ -443,10 +443,10 @@ This BrightLife IMS project represents the culmination of skills learned through
 - **Full-Stack Architecture** and Best Practices
 - **Professional Development Workflows**
 
-**Submitted by**: [Your Name]  
+**Submitted by**: Yeasin Arafat
 **Course**: Itransition Software Development Program  
 **Date**: September 5, 2025
 
 ---
 
-*For questions about this project or implementation details, please contact [your-email@example.com]*
+*For questions about this project or implementation details, please contact yeasinarafat.cs@gmail.com*
