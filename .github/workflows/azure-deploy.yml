@@ -1,4 +1,4 @@
-name: Build, Test and Deploy to Azure
+name: Build and Test
 
 on:
   push:
@@ -8,8 +8,6 @@ on:
 
 env:
   DOTNET_VERSION: '9.0.x'
-  AZURE_WEBAPP_NAME: brightlife-ims-prod
-  AZURE_WEBAPP_PACKAGE_PATH: '.'
 
 jobs:
   build-and-test:
@@ -44,59 +42,6 @@ jobs:
         cd BrightLifeIMS
         dotnet test tests/BrightLifeIMS.IntegrationTests/BrightLifeIMS.IntegrationTests.csproj --no-build --verbosity normal --configuration Release --logger "console;verbosity=minimal" || echo "Integration tests completed with issues"
 
-    - name: Publish
-      run: |
-        cd BrightLifeIMS
-        dotnet publish src/BrightLifeIMS.Web/BrightLifeIMS.Web.csproj -c Release -o ../myapp
-
-    - name: Upload artifact for deployment job
-      uses: actions/upload-artifact@v4
-      with:
-        name: .net-app
-        path: myapp
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build-and-test
-    if: github.ref == 'refs/heads/main'
-    
-    environment:
-      name: 'production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-
-    steps:
-    - name: Download artifact from build job
-      uses: actions/download-artifact@v4
-      with:
-        name: .net-app
-
-    - name: Deploy to Azure Web App
-      id: deploy-to-webapp
-      uses: azure/webapps-deploy@v3
-      with:
-        app-name: ${{ env.AZURE_WEBAPP_NAME }}
-        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-        package: .
-
-    - name: Setup .NET for migrations
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
-
-    - name: Install EF Core tools
-      run: dotnet tool install --global dotnet-ef --version 9.0.0
-
-    - name: Run PostgreSQL database migrations
-      run: |
-        echo "Running Entity Framework migrations for PostgreSQL..."
-        # Note: This requires database connection string to be configured in Azure App Service
-        # The actual migration will run automatically on app startup
-        echo "Migrations will be applied automatically on application startup"
-        echo "PostgreSQL database will be initialized with Identity schema and custom entities"
-
-    - name: Health check
-      run: |
-        echo "Waiting for deployment and database initialization..."
-        sleep 60
-        echo "Checking application health..."
-        curl -f ${{ steps.deploy-to-webapp.outputs.webapp-url }}/ || echo "Application deployed successfully"
+  # Deployment is handled manually via Azure Developer CLI (azd)
+  # To deploy: run `azd deploy` from the project root directory
+  # The application is live at: https://app-bl-pstn3hojje7gu.azurewebsites.net
