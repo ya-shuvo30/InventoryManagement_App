@@ -14,6 +14,30 @@
 
 ---
 
+## 🎉 **LIVE DEPLOYMENT** 🌐
+
+**🚀 The application is now LIVE on Azure!**
+
+### **Production URLs**
+- **Main Application**: https://app-bl-pstn3hojje7gu.azurewebsites.net
+- **Admin Portal**: https://app-bl-pstn3hojje7gu.azurewebsites.net/Identity/Account/Register
+- **GitHub Repository**: https://github.com/ya-shuvo30/InventoryManagement_App
+
+### **Cloud Infrastructure**
+- **Hosting**: Azure App Service (Free F1 Tier)
+- **Database**: Azure Database for PostgreSQL (Southeast Asia)
+- **Authentication**: ASP.NET Core Identity + Google OAuth
+- **Monitoring**: Application Insights + Log Analytics
+- **Security**: Azure Key Vault for secret management
+
+### **Deployment Details**
+- **Environment**: Production (Azure Cloud)
+- **Region**: Southeast Asia (Azure Student Pack optimized)
+- **Cost**: ~$13.50/month (7+ months with $100 student credit)
+- **Status**: ✅ **FULLY OPERATIONAL**
+
+---
+
 ## 📋 **Course Project Information**
 
 **Student**: Yeasin Arafat 
