@@ -1,0 +1,266 @@
+@model BrightLifeIMS.Web.Models.Entities.Inventory
+@{
+    ViewData["Title"] = "Create Inventory";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>
+                    <i class="fas fa-plus-circle text-success"></i>
+                    Create New Inventory
+                </h2>
+                <a asp-action="Index" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left"></i> Back to Inventories
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <form asp-action="Create" method="post" id="inventoryForm">
+        <div class="row">
+            <!-- Basic Information -->
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-info-circle"></i> Basic Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label asp-for="Title" class="form-label">
+                                Title <span class="text-danger">*</span>
+                            </label>
+                            <input asp-for="Title" class="form-control" required placeholder="Enter inventory title" />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="TitleBn" class="form-label">Title (Bengali)</label>
+                            <input asp-for="TitleBn" class="form-control" placeholder="বাংলা শিরোনাম" />
+                            <span asp-validation-for="TitleBn" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label">Description</label>
+                            <textarea asp-for="Description" class="form-control" rows="4" placeholder="Describe your inventory purpose and contents"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="DescriptionBn" class="form-label">Description (Bengali)</label>
+                            <textarea asp-for="DescriptionBn" class="form-control" rows="4" placeholder="বাংলায় বর্ণনা"></textarea>
+                            <span asp-validation-for="DescriptionBn" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="CustomIdFormat" class="form-label">
+                                Custom ID Format
+                                <small class="text-muted">(for items in this inventory)</small>
+                            </label>
+                            <input asp-for="CustomIdFormat" class="form-control" placeholder="e.g., ITEM-{SEQUENCE:000000}" value="ITEM-{SEQUENCE:000000}" />
+                            <div class="form-text">Use {SEQUENCE:000000} for auto-incrementing numbers</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input asp-for="IsPublic" class="form-check-input" type="checkbox" />
+                                <label asp-for="IsPublic" class="form-check-label">
+                                    <i class="fas fa-globe"></i> Make this inventory public
+                                </label>
+                                <div class="form-text">Public inventories can be viewed by all users</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Custom Fields Configuration -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-cogs"></i> Custom Fields Setup</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted small">Configure custom fields that will be available for items in this inventory.</p>
+                        
+                        <!-- String Fields -->
+                        <h6 class="mt-3"><i class="fas fa-font"></i> Text Fields</h6>
+                        @for (int i = 1; i <= 3; i++)
+                        {
+                            <div class="mb-3 border rounded p-2">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="string@(i)_state" 
+                                           name="CustomString@(i)State" value="true" />
+                                    <label class="form-check-label fw-bold" for="string@(i)_state">
+                                        Enable Text Field @i
+                                    </label>
+                                </div>
+                                <div class="mt-2" id="string@(i)_config" style="display: none;">
+                                    <input type="text" class="form-control form-control-sm" 
+                                           name="CustomString@(i)Name" placeholder="Field Name" />
+                                    <input type="text" class="form-control form-control-sm mt-1" 
+                                           name="CustomString@(i)Description" placeholder="Description" />
+                                    <div class="form-check form-check-sm mt-1">
+                                        <input type="checkbox" class="form-check-input" 
+                                               name="CustomString@(i)Required" value="true" />
+                                        <label class="form-check-label small">Required</label>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        <!-- Integer Fields -->
+                        <h6 class="mt-3"><i class="fas fa-hashtag"></i> Number Fields</h6>
+                        @for (int i = 1; i <= 3; i++)
+                        {
+                            <div class="mb-3 border rounded p-2">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="int@(i)_state" 
+                                           name="CustomInt@(i)State" value="true" />
+                                    <label class="form-check-label fw-bold" for="int@(i)_state">
+                                        Enable Number Field @i
+                                    </label>
+                                </div>
+                                <div class="mt-2" id="int@(i)_config" style="display: none;">
+                                    <input type="text" class="form-control form-control-sm" 
+                                           name="CustomInt@(i)Name" placeholder="Field Name" />
+                                    <input type="text" class="form-control form-control-sm mt-1" 
+                                           name="CustomInt@(i)Description" placeholder="Description" />
+                                    <div class="form-check form-check-sm mt-1">
+                                        <input type="checkbox" class="form-check-input" 
+                                               name="CustomInt@(i)Required" value="true" />
+                                        <label class="form-check-label small">Required</label>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        <!-- Boolean Fields -->
+                        <h6 class="mt-3"><i class="fas fa-toggle-on"></i> Yes/No Fields</h6>
+                        @for (int i = 1; i <= 3; i++)
+                        {
+                            <div class="mb-3 border rounded p-2">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="bool@(i)_state" 
+                                           name="CustomBool@(i)State" value="true" />
+                                    <label class="form-check-label fw-bold" for="bool@(i)_state">
+                                        Enable Yes/No Field @i
+                                    </label>
+                                </div>
+                                <div class="mt-2" id="bool@(i)_config" style="display: none;">
+                                    <input type="text" class="form-control form-control-sm" 
+                                           name="CustomBool@(i)Name" placeholder="Field Name" />
+                                    <input type="text" class="form-control form-control-sm mt-1" 
+                                           name="CustomBool@(i)Description" placeholder="Description" />
+                                    <div class="form-check form-check-sm mt-1">
+                                        <input type="checkbox" class="form-check-input" 
+                                               name="CustomBool@(i)Required" value="true" />
+                                        <label class="form-check-label small">Required</label>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        <!-- Text (Long) Fields -->
+                        <h6 class="mt-3"><i class="fas fa-align-left"></i> Long Text Fields</h6>
+                        @for (int i = 1; i <= 3; i++)
+                        {
+                            <div class="mb-3 border rounded p-2">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="text@(i)_state" 
+                                           name="CustomText@(i)State" value="true" />
+                                    <label class="form-check-label fw-bold" for="text@(i)_state">
+                                        Enable Long Text Field @i
+                                    </label>
+                                </div>
+                                <div class="mt-2" id="text@(i)_config" style="display: none;">
+                                    <input type="text" class="form-control form-control-sm" 
+                                           name="CustomText@(i)Name" placeholder="Field Name" />
+                                    <input type="text" class="form-control form-control-sm mt-1" 
+                                           name="CustomText@(i)Description" placeholder="Description" />
+                                    <div class="form-check form-check-sm mt-1">
+                                        <input type="checkbox" class="form-check-input" 
+                                               name="CustomText@(i)Required" value="true" />
+                                        <label class="form-check-label small">Required</label>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        <!-- URL Fields -->
+                        <h6 class="mt-3"><i class="fas fa-link"></i> URL Fields</h6>
+                        @for (int i = 1; i <= 3; i++)
+                        {
+                            <div class="mb-3 border rounded p-2">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="url@(i)_state" 
+                                           name="CustomUrl@(i)State" value="true" />
+                                    <label class="form-check-label fw-bold" for="url@(i)_state">
+                                        Enable URL Field @i
+                                    </label>
+                                </div>
+                                <div class="mt-2" id="url@(i)_config" style="display: none;">
+                                    <input type="text" class="form-control form-control-sm" 
+                                           name="CustomUrl@(i)Name" placeholder="Field Name" />
+                                    <input type="text" class="form-control form-control-sm mt-1" 
+                                           name="CustomUrl@(i)Description" placeholder="Description" />
+                                    <div class="form-check form-check-sm mt-1">
+                                        <input type="checkbox" class="form-check-input" 
+                                               name="CustomUrl@(i)Required" value="true" />
+                                        <label class="form-check-label small">Required</label>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-times"></i> Cancel
+                    </a>
+                    <button type="submit" class="btn btn-success btn-lg">
+                        <i class="fas fa-save"></i> Create Inventory
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        // Toggle custom field configuration visibility
+        document.addEventListener('DOMContentLoaded', function() {
+            const fieldTypes = ['string', 'int', 'bool', 'text', 'url'];
+            
+            fieldTypes.forEach(type => {
+                for (let i = 1; i <= 3; i++) {
+                    const checkbox = document.getElementById(`${type}${i}_state`);
+                    const config = document.getElementById(`${type}${i}_config`);
+                    
+                    if (checkbox && config) {
+                        checkbox.addEventListener('change', function() {
+                            config.style.display = this.checked ? 'block' : 'none';
+                        });
+                    }
+                }
+            });
+        });
+
+        // Form validation
+        document.getElementById('inventoryForm').addEventListener('submit', function(e) {
+            const title = document.querySelector('input[name="Title"]').value.trim();
+            if (!title) {
+                e.preventDefault();
+                alert('Please enter a title for your inventory.');
+                return false;
+            }
+        });
+    </script>
+}

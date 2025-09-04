@@ -1,0 +1,286 @@
+@model BrightLifeIMS.Web.Models.Entities.Inventory
+@{
+    ViewData["Title"] = $"Inventory Details - {Model.Title}";
+}
+
+<div class="container mt-4">
+    <!-- Header -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2>
+                        <i class="fas fa-box text-primary"></i>
+                        @Model.Title
+                        @if (Model.IsPublic)
+                        {
+                            <span class="badge bg-success ms-2">
+                                <i class="fas fa-globe"></i> Public
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary ms-2">
+                                <i class="fas fa-lock"></i> Private
+                            </span>
+                        }
+                    </h2>
+                    @if (!string.IsNullOrEmpty(Model.TitleBn))
+                    {
+                        <p class="text-muted">@Model.TitleBn</p>
+                    }
+                </div>
+                <div>
+                    <a asp-action="Items" asp-route-id="@Model.Id" class="btn btn-info">
+                        <i class="fas fa-list"></i> View Items (@(Model.Items?.Count ?? 0))
+                    </a>
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                        <i class="fas fa-edit"></i> Edit
+                    </a>
+                    <a asp-action="Index" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to List
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Main Information -->
+        <div class="col-md-8">
+            <!-- Description -->
+            @if (!string.IsNullOrEmpty(Model.Description))
+            {
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5><i class="fas fa-info-circle"></i> Description</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>@Model.Description</p>
+                        @if (!string.IsNullOrEmpty(Model.DescriptionBn))
+                        {
+                            <hr>
+                            <p class="text-muted"><strong>Bengali:</strong> @Model.DescriptionBn</p>
+                        }
+                    </div>
+                </div>
+            }
+
+            <!-- Custom Fields Configuration -->
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-cogs"></i> Custom Fields Configuration</h5>
+                </div>
+                <div class="card-body">
+                    @{
+                        var hasActiveFields = false;
+                    }
+                    
+                    <!-- String Fields -->
+                    @for (int i = 1; i <= 3; i++)
+                    {
+                        var stateProperty = Model.GetType().GetProperty($"CustomString{i}State");
+                        var nameProperty = Model.GetType().GetProperty($"CustomString{i}Name");
+                        var descProperty = Model.GetType().GetProperty($"CustomString{i}Description");
+                        var requiredProperty = Model.GetType().GetProperty($"CustomString{i}Required");
+                        
+                        var isActive = (bool)(stateProperty?.GetValue(Model) ?? false);
+                        var fieldName = nameProperty?.GetValue(Model)?.ToString();
+                        var fieldDesc = descProperty?.GetValue(Model)?.ToString();
+                        var isRequired = (bool)(requiredProperty?.GetValue(Model) ?? false);
+                        
+                        if (isActive && !string.IsNullOrEmpty(fieldName))
+                        {
+                            hasActiveFields = true;
+                            <div class="mb-2">
+                                <span class="badge bg-primary">
+                                    <i class="fas fa-font"></i> Text Field
+                                </span>
+                                <strong>@fieldName</strong>
+                                @if (isRequired)
+                                {
+                                    <span class="text-danger">*</span>
+                                }
+                                @if (!string.IsNullOrEmpty(fieldDesc))
+                                {
+                                    <br><small class="text-muted">@fieldDesc</small>
+                                }
+                            </div>
+                        }
+                    }
+
+                    <!-- Integer Fields -->
+                    @for (int i = 1; i <= 3; i++)
+                    {
+                        var stateProperty = Model.GetType().GetProperty($"CustomInt{i}State");
+                        var nameProperty = Model.GetType().GetProperty($"CustomInt{i}Name");
+                        var descProperty = Model.GetType().GetProperty($"CustomInt{i}Description");
+                        var requiredProperty = Model.GetType().GetProperty($"CustomInt{i}Required");
+                        
+                        var isActive = (bool)(stateProperty?.GetValue(Model) ?? false);
+                        var fieldName = nameProperty?.GetValue(Model)?.ToString();
+                        var fieldDesc = descProperty?.GetValue(Model)?.ToString();
+                        var isRequired = (bool)(requiredProperty?.GetValue(Model) ?? false);
+                        
+                        if (isActive && !string.IsNullOrEmpty(fieldName))
+                        {
+                            hasActiveFields = true;
+                            <div class="mb-2">
+                                <span class="badge bg-info">
+                                    <i class="fas fa-hashtag"></i> Number Field
+                                </span>
+                                <strong>@fieldName</strong>
+                                @if (isRequired)
+                                {
+                                    <span class="text-danger">*</span>
+                                }
+                                @if (!string.IsNullOrEmpty(fieldDesc))
+                                {
+                                    <br><small class="text-muted">@fieldDesc</small>
+                                }
+                            </div>
+                        }
+                    }
+
+                    <!-- Boolean Fields -->
+                    @for (int i = 1; i <= 3; i++)
+                    {
+                        var stateProperty = Model.GetType().GetProperty($"CustomBool{i}State");
+                        var nameProperty = Model.GetType().GetProperty($"CustomBool{i}Name");
+                        var descProperty = Model.GetType().GetProperty($"CustomBool{i}Description");
+                        var requiredProperty = Model.GetType().GetProperty($"CustomBool{i}Required");
+                        
+                        var isActive = (bool)(stateProperty?.GetValue(Model) ?? false);
+                        var fieldName = nameProperty?.GetValue(Model)?.ToString();
+                        var fieldDesc = descProperty?.GetValue(Model)?.ToString();
+                        var isRequired = (bool)(requiredProperty?.GetValue(Model) ?? false);
+                        
+                        if (isActive && !string.IsNullOrEmpty(fieldName))
+                        {
+                            hasActiveFields = true;
+                            <div class="mb-2">
+                                <span class="badge bg-success">
+                                    <i class="fas fa-toggle-on"></i> Yes/No Field
+                                </span>
+                                <strong>@fieldName</strong>
+                                @if (isRequired)
+                                {
+                                    <span class="text-danger">*</span>
+                                }
+                                @if (!string.IsNullOrEmpty(fieldDesc))
+                                {
+                                    <br><small class="text-muted">@fieldDesc</small>
+                                }
+                            </div>
+                        }
+                    }
+
+                    @if (!hasActiveFields)
+                    {
+                        <p class="text-muted">No custom fields have been configured for this inventory.</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-md-4">
+            <!-- Statistics -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5><i class="fas fa-chart-bar"></i> Statistics</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-12 mb-3">
+                            <i class="fas fa-eye text-info fa-2x"></i>
+                            <h4 class="mb-0">@Model.ViewsCount</h4>
+                            <small class="text-muted">Total Views</small>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <i class="fas fa-heart text-danger fa-2x"></i>
+                            <h4 class="mb-0">@Model.LikesCount</h4>
+                            <small class="text-muted">Likes</small>
+                        </div>
+                        <div class="col-12">
+                            <i class="fas fa-box text-success fa-2x"></i>
+                            <h4 class="mb-0">@(Model.Items?.Count ?? 0)</h4>
+                            <small class="text-muted">Items</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Details -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5><i class="fas fa-info"></i> Details</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-5">Created:</dt>
+                        <dd class="col-sm-7">@Model.CreatedAt.ToString("MMM dd, yyyy")</dd>
+                        
+                        <dt class="col-sm-5">Updated:</dt>
+                        <dd class="col-sm-7">@Model.UpdatedAt.ToString("MMM dd, yyyy")</dd>
+                        
+                        <dt class="col-sm-5">Status:</dt>
+                        <dd class="col-sm-7">
+                            @if (Model.IsActive)
+                            {
+                                <span class="badge bg-success">Active</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Inactive</span>
+                            }
+                        </dd>
+                        
+                        <dt class="col-sm-5">Version:</dt>
+                        <dd class="col-sm-7">@Model.Version</dd>
+                        
+                        @if (!string.IsNullOrEmpty(Model.CustomIdFormat))
+                        {
+                            <dt class="col-sm-5">ID Format:</dt>
+                            <dd class="col-sm-7"><code>@Model.CustomIdFormat</code></dd>
+                        }
+                    </dl>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-bolt"></i> Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a asp-controller="Item" asp-action="Create" asp-route-inventoryId="@Model.Id" class="btn btn-success">
+                            <i class="fas fa-plus"></i> Add New Item
+                        </a>
+                        <a asp-action="Items" asp-route-id="@Model.Id" class="btn btn-primary">
+                            <i class="fas fa-list"></i> Manage Items
+                        </a>
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                            <i class="fas fa-edit"></i> Edit Inventory
+                        </a>
+                        <button class="btn btn-outline-danger" onclick="confirmDelete()">
+                            <i class="fas fa-trash"></i> Delete Inventory
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function confirmDelete() {
+            if (confirm('Are you sure you want to delete this inventory? This action cannot be undone.')) {
+                // Add delete functionality here
+                alert('Delete functionality will be implemented soon.');
+            }
+        }
+    </script>
+}

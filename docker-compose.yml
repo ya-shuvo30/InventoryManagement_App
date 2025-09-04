@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: brightlife-postgres
+    environment:
+      POSTGRES_DB: brightlife_ims
+      POSTGRES_USER: brightlife_user
+      POSTGRES_PASSWORD: brightlife_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - brightlife-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: brightlife-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - brightlife-network
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: brightlife-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@brightlife.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "8080:80"
+    depends_on:
+      - postgres
+    networks:
+      - brightlife-network
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  brightlife-network:
+    driver: bridge
+

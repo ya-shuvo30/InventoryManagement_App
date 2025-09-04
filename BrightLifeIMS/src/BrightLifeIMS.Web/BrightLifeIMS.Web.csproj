@@ -1,0 +1,49 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>aspnet-BrightLifeIMS.Web-9028f740-6cd1-422d-89e9-ce16ebd4ae69</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="app.db" CopyToOutputDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
+  </ItemGroup>
+
+  <!-- Re-enabling core features gradually -->
+  <ItemGroup>
+    <!-- Phase 1: Enable Tag and Category systems -->
+    <!-- <Compile Remove="Services\Core\TagService.cs" /> -->
+    <!-- <Compile Remove="Data\Repositories\TagRepository.cs" /> -->
+    <!-- <Compile Remove="Data\Repositories\CategoryRepository.cs" /> -->
+    <!-- <Compile Remove="Data\Configurations\TagConfiguration.cs" /> -->
+    <!-- <Compile Remove="Data\Configurations\CategoryConfiguration.cs" /> -->
+    <!-- <Compile Remove="Data\Configurations\InventoryTagConfiguration.cs" /> -->
+    
+    <!-- Phase 2: Enable Like and interaction systems -->
+    <Compile Remove="Services\Core\LikeService.cs" />
+    <Compile Remove="Data\Configurations\ItemLikeConfiguration.cs" />
+    
+    <!-- Phase 3: Enable advanced features -->
+    <Compile Remove="Services\Core\AutoSaveService.cs" />
+    <Compile Remove="Services\Core\ExportService.cs" />
+    <Compile Remove="Controllers\Api\InventoriesController.cs" />
+    <Compile Remove="Data\Configurations\AutoSaveConfiguration.cs" />
+    <Compile Remove="Data\Configurations\CommentConfiguration.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="9.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="9.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.8">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.8" />
+  </ItemGroup>
+
+</Project>

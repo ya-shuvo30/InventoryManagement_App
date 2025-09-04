@@ -1,0 +1,65 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to BrightLife IMS</h1>
+    <p class="lead">Your comprehensive Inventory Management System</p>
+    
+    <div class="row mt-5">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="fas fa-boxes text-primary"></i>
+                        Manage Inventories
+                    </h5>
+                    <p class="card-text">Create and organize your inventories with custom fields and categories.</p>
+                    <a href="@Url.Action("Index", "Inventory")" class="btn btn-primary">View Inventories</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="fas fa-plus-circle text-success"></i>
+                        Create New
+                    </h5>
+                    <p class="card-text">Start by creating your first inventory to begin managing your items.</p>
+                    <a href="@Url.Action("Create", "Inventory")" class="btn btn-success">Create Inventory</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="fas fa-chart-bar text-info"></i>
+                        Analytics
+                    </h5>
+                    <p class="card-text">Track and analyze your inventory performance and trends.</p>
+                    <a href="#" class="btn btn-info">View Reports</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.card {
+    margin-bottom: 20px;
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.fas {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+</style>
