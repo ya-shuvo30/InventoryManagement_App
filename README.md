@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # BrightLife IMS (Inventory Management System)
 
 Inventory & asset management application built on ASP.NET Core 9.0 + Identity + EF Core. Ships with a lightweight default SQLite store (for frictionless local dev) and optional PostgreSQL + Redis infrastructure via Docker Compose.
@@ -164,4 +165,3 @@ MIT License (add LICENSE file if not present).
 
 ---
 Need a section added (CI, deployment, seeding)? Open an issue or request it.
-
