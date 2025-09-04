@@ -10,9 +10,17 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
-// Configure database context - Use SQLite only for now
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite(connectionString));
+// Configure database context - SQLite for development, PostgreSQL for production
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddDbContext<AppDbContext>(options =>
+        options.UseSqlite(connectionString));
+}
+else
+{
+    builder.Services.AddDbContext<AppDbContext>(options =>
+        options.UseNpgsql(connectionString));
+}
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
