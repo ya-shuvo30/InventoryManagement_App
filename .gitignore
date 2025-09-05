@@ -6,6 +6,9 @@ obj/
 *.suo
 *.userprefs
 
+# Prevent duplicate GitHub Actions workflows
+BrightLifeIMS/.github/
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
